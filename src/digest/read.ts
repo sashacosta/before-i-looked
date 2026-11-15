@@ -52,6 +52,7 @@ export function readNight(runsDir: string, night: string): Digest | null {
         owner: line.owner,
         runs: 1,
         retries: line.status === 'retry' ? 1 : 0,
+        fails: line.status === 'fail' ? 1 : 0,
         lastStatus: line.status,
         lastError: line.error,
         firstAt: line.at,
@@ -61,6 +62,7 @@ export function readNight(runsDir: string, night: string): Digest | null {
     }
     row.runs++;
     if (line.status === 'retry') row.retries++;
+    if (line.status === 'fail') row.fails++;
     row.owner = line.owner ?? row.owner;
     // Log order is time order; later lines win, and the time keeps its offset.
     row.lastStatus = line.status;

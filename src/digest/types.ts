@@ -8,6 +8,7 @@ export type DigestRow = {
   owner: string | null; // null in the log: keep the row, render "—"
   runs: number; // every parsed line for the job
   retries: number; // lines with status "retry"
+  fails: number; // lines with status "fail"
   lastStatus: JobStatus;
   lastError: string | null;
   firstAt: string; // as written in the log, offset kept (never converted to UTC)

@@ -2,16 +2,15 @@ import type { Digest } from './types.js';
 
 export type NightCounts = { ok: number; retry: number; fail: number };
 
-// Rows keep only runs, retries and lastStatus. retry = sum of retries (exact). fail = rows whose
-// last line is "fail" (exact when a failure is never followed by a retry or ok). ok = the rest of the lines.
+// Exact per-status line counts: ok = every parsed line that is neither retry nor fail.
 export function countNight(d: Digest): NightCounts {
-  let lines = 0;
+  let runs = 0;
   let retry = 0;
   let fail = 0;
   for (const r of d.rows) {
-    lines += r.runs;
+    runs += r.runs;
     retry += r.retries;
-    if (r.lastStatus === 'fail') fail++;
+    fail += r.fails;
   }
-  return { ok: lines - retry - fail, retry, fail };
+  return { ok: runs - retry - fail, retry, fail };
 }
